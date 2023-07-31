@@ -13,9 +13,9 @@ workspace "CADExchangerTest"
 
 project "CurvesLib"
     location "CurvesLib"
-    kind "StaticLib"
+    kind "SharedLib"
     language "C++"
-    cppdialect "C++17"
+    cppdialect "C++20"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -34,6 +34,11 @@ project "CurvesLib"
         "_CRT_SECURE_NO_WARNINGS"
     }
 
+    postbuildcommands
+    {
+        ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/CADExchangerTest")
+    }
+
     filter "system:windows"
     systemversion "latest"
 
@@ -44,7 +49,7 @@ project "CurvesLib"
     filter "configurations:Release"
     runtime "Release"
     optimize "on"
-    
+
     
 
 project "CADExchangerTest"
@@ -62,6 +67,11 @@ project "CADExchangerTest"
     {
         "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp",
+    }
+
+    includedirs
+    {
+        "CurvesLib/src"
     }
 
     defines
