@@ -25,13 +25,20 @@ project "CurvesLib"
 
     files
     {
+        "%{prj.name}/include/**.h",
         "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp",
     }
 
+    includedirs
+    {
+        "CurvesLib/src",
+    }
+
     defines
     {
-        "_CRT_SECURE_NO_WARNINGS"
+        "_CRT_SECURE_NO_WARNINGS",
+        "_USE_MATH_DEFINES"
     }
 
     postbuildcommands
@@ -41,6 +48,11 @@ project "CurvesLib"
 
     filter "system:windows"
     systemversion "latest"
+    defines
+    {
+        "CL_PLATFORM_WINDOWS",
+        "CL_BUILD_DLL"
+    }
 
     filter "configurations:Debug"
     runtime "Debug"
@@ -58,19 +70,19 @@ project "CADExchangerTest"
     language "C++"
     cppdialect "C++20"
     targetdir "bin/%{cfg.buildcfg}"
-    staticruntime "off"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
     files
     {
-        "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp",
+        "%{prj.name}/include/**.h"
     }
 
     includedirs
     {
+        "CurvesLib/include",
         "CurvesLib/src"
     }
 
@@ -86,6 +98,10 @@ project "CADExchangerTest"
 
     filter "system:windows"
     systemversion "latest"
+    defines
+    {
+        "CL_PLATFORM_WINDOWS",
+    }
 
     filter "configurations:Debug"
     runtime "Debug"
